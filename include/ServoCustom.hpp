@@ -1,25 +1,21 @@
+#pragma once
+
 #include <Servo.h>
+#include "Types.hpp"
 
-namespace ServoNS {
-    enum class ServoType {
-        JX_6225MG,
-        HK15298B
-    };
+class ServoCustom {
+public:
+    explicit ServoCustom(ServoType type, int pin, int defaultAngle);
 
-    class ServoCustom {
-    public:
-        ServoCustom(ServoType type, int pin);
+    void setAngle(int angle);
+    int getAngle();
 
-        void setAngle(int angle);
-        int getAngle();
-
-    private:
-        Servo _servo;
-        int _pin;
-        ServoType _type;
-        int _angle;
-        int _defaultAngle;
-        int _minAngle;
-        int _maxAngle;
-    };
-}
+private:
+    Servo _servo;
+    ServoType _type;
+    int _pin;
+    int _defaultAngle;
+    int _angle;
+    int _minAngle;
+    int _maxAngle;
+};

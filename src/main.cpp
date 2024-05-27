@@ -1,14 +1,27 @@
-#include "../include/main.hpp"
+#include <Arduino.h>
+#include "../include/Arm.hpp"
 
-void setup() {
-//    setupMotorControl();
-//    setupSensorTask();
-//
-//    Serial.begin(115200);
-//
-//    xTaskCreate(sensorTask, "Sensor Task", 1000, NULL, 1, NULL);
-}
+Arm rightArm(SideType::RIGHT);
+
+void setup() {}
 
 void loop() {
-    // Empty, tasks are managed by FreeRTOS
+    for (int i = 0; i < 300; i++) {
+        rightArm._wrist.setAngle(i);
+        rightArm._hand._index.setAngle(i);
+        rightArm._hand._middle.setAngle(i);
+        rightArm._hand._ring.setAngle(i);
+        rightArm._hand._pinky.setAngle(i);
+        rightArm._hand._thumb.setAngle(i);
+        delay(100);
+    }
+    for (int i = 300; i > 0; i--) {
+        rightArm._wrist.setAngle(i);
+        rightArm._hand._index.setAngle(i);
+        rightArm._hand._middle.setAngle(i);
+        rightArm._hand._ring.setAngle(i);
+        rightArm._hand._pinky.setAngle(i);
+        rightArm._hand._thumb.setAngle(i);
+        delay(100);
+    }
 }
