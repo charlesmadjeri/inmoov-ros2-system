@@ -9,9 +9,11 @@ private:
 public:
     explicit Hand(SideType type);
 
-    Finger _thumb;
-    Finger _index;
-    Finger _middle;
-    Finger _ring;
-    Finger _pinky;
+    void setup();
+
+    Finger thumb;
+    Finger index;
+    Finger middle;
+    Finger ring;
+    Finger pinky;
 };

@@ -7,6 +7,7 @@ class ServoCustom {
 public:
     explicit ServoCustom(ServoType type, int pin, int defaultAngle);
 
+    void setup();
     void setAngle(int angle);
     int getAngle();
 

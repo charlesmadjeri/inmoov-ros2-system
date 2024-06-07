@@ -1,5 +1,5 @@
-#include "../include/Finger.hpp"
-#include "../include/Config.hpp"
+#include "include/Finger.hpp"
+#include "include/Config.hpp"
 
 Finger::Finger(ServoType servoType, int servoPin, int sensorPin):
         _servo(servoType, servoPin, FINGER_DEFAULT_ANGLE),
@@ -8,6 +8,12 @@ Finger::Finger(ServoType servoType, int servoPin, int sensorPin):
         _minAngle(FINGER_MIN_ANGLE),
         _maxAngle(FINGER_MAX_ANGLE)
 {}
+
+void
+Finger::setup() {
+    _servo.setup();
+    _sensor.setup();
+}
 
 void
 Finger::setAngle(int angle) {

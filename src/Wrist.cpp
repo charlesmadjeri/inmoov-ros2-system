@@ -1,4 +1,4 @@
-#include "../include/Wrist.hpp"
+#include "include/Wrist.hpp"
 
 Wrist::Wrist(SideType type):
     _type(type),
@@ -11,6 +11,12 @@ Wrist::Wrist(SideType type):
     _minAngle(type == SideType::LEFT ? LEFT_WRIST_MIN_ANGLE : RIGHT_WRIST_MIN_ANGLE),
     _maxAngle(type == SideType::LEFT ? LEFT_WRIST_MAX_ANGLE : RIGHT_WRIST_MAX_ANGLE)
 {}
+
+void
+Wrist::setup()
+{
+    _servo.setup();
+}
 
 void
 Wrist::setAngle(int angle)

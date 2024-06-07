@@ -1,8 +1,14 @@
-#include "../include/HallSensor.hpp"
+#include "include/HallSensor.hpp"
 
 HallSensor::HallSensor(int pin): _pin(pin)
 {
     Serial.begin(9600);
+}
+
+void
+HallSensor::setup()
+{
+//    pinMode(_pin, INPUT);
 }
 
 float

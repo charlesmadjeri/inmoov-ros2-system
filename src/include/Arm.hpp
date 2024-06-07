@@ -8,8 +8,10 @@ class Arm {
 private:
     SideType _side;
 public:
-    explicit Arm(SideType side): _side(side), _wrist(side), _hand(side) {}
+    explicit Arm(SideType side);
 
-    Wrist _wrist;
-    Hand _hand;
+    void setup();
+
+    Wrist wrist;
+    Hand hand;
 };

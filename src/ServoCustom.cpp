@@ -1,4 +1,4 @@
-#include "../include/ServoCustom.hpp"
+#include "include/ServoCustom.hpp"
 
 ServoCustom::ServoCustom(ServoType type, int pin, int defaultAngle):
     _type(type),
@@ -9,11 +9,11 @@ ServoCustom::ServoCustom(ServoType type, int pin, int defaultAngle):
     switch (type) {
         case ServoType::JX_6225MG:
             this->_minAngle = 0;
-            this->_maxAngle = 150;
+            this->_maxAngle = 300;
             break;
         case ServoType::HK15298B:
             this->_minAngle = 0;
-            this->_maxAngle = 300;
+            this->_maxAngle = 180;
             break;
         default:
             this->_minAngle = 0;
@@ -21,7 +21,13 @@ ServoCustom::ServoCustom(ServoType type, int pin, int defaultAngle):
             break;
     }
     this->_servo = Servo();
-    this->_servo.attach(_pin);
+}
+
+void
+ServoCustom::setup()
+{
+    this->_servo.attach(this->_pin);
+    this->_servo.write(this->_defaultAngle);
 }
 
 void

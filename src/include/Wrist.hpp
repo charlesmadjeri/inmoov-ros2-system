@@ -15,6 +15,8 @@ private:
 public:
     explicit Wrist(SideType type);
 
+    void setup();
+
     void setAngle(int angle);
     int getAngle();
 };

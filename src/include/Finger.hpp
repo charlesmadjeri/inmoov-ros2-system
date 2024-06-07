@@ -15,6 +15,8 @@ private:
 public:
     explicit Finger(ServoType servoType, int servoPin, int sensorPin);
 
+    void setup();
+
     void setAngle(int angle);
     int getAngle();
 };

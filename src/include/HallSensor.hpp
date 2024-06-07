@@ -8,6 +8,8 @@ private:
 public:
     explicit HallSensor(int pin);
 
+    void setup();
+
     float getVoltage();
 private:
     int getValue();

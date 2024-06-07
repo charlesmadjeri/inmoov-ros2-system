@@ -1,27 +1,58 @@
 #include <Arduino.h>
-#include "../include/Arm.hpp"
+#include "include/Arm.hpp"
 
+// Declare right arm object
 Arm rightArm(SideType::RIGHT);
 
-void setup() {}
+/**
+ * @brief Setup function
+ */
+void setup()
+{
+    // Call setup method from right arm object
+    rightArm.setup();
 
-void loop() {
-    for (int i = 0; i < 300; i++) {
-        rightArm._wrist.setAngle(i);
-        rightArm._hand._index.setAngle(i);
-        rightArm._hand._middle.setAngle(i);
-        rightArm._hand._ring.setAngle(i);
-        rightArm._hand._pinky.setAngle(i);
-        rightArm._hand._thumb.setAngle(i);
-        delay(100);
+    // Wait for servos setup
+    delay(1250);
+}
+
+/**
+ * @brief Loop function
+ */
+void loop()
+{
+    // Move wrist and fingers servos counterclockwise
+    for (int i = 0; i <= 300; i++) {
+        rightArm.wrist.setAngle(i);
+        rightArm.hand.thumb.setAngle(i);
+        rightArm.hand.index.setAngle(i);
+        rightArm.hand.middle.setAngle(i);
+        rightArm.hand.ring.setAngle(i);
+        rightArm.hand.pinky.setAngle(i);
+
+        delay(10);
     }
-    for (int i = 300; i > 0; i--) {
-        rightArm._wrist.setAngle(i);
-        rightArm._hand._index.setAngle(i);
-        rightArm._hand._middle.setAngle(i);
-        rightArm._hand._ring.setAngle(i);
-        rightArm._hand._pinky.setAngle(i);
-        rightArm._hand._thumb.setAngle(i);
-        delay(100);
+
+    // Move wrist and fingers servos clockwise
+    for (int i = 300; i >= 0; i--) {
+        rightArm.wrist.setAngle(i);
+        rightArm.hand.thumb.setAngle(i);
+        rightArm.hand.index.setAngle(i);
+        rightArm.hand.middle.setAngle(i);
+        rightArm.hand.ring.setAngle(i);
+        rightArm.hand.pinky.setAngle(i);
+
+        delay(10);
     }
+
+    // Set wrist and fingers servos to default angle
+    rightArm.wrist.setAngle(RIGHT_WRIST_DEFAULT_ANGLE);
+    rightArm.hand.thumb.setAngle(FINGER_DEFAULT_ANGLE);
+    rightArm.hand.index.setAngle(FINGER_DEFAULT_ANGLE);
+    rightArm.hand.middle.setAngle(FINGER_DEFAULT_ANGLE);
+    rightArm.hand.ring.setAngle(FINGER_DEFAULT_ANGLE);
+    rightArm.hand.pinky.setAngle(FINGER_DEFAULT_ANGLE);
+
+    // Endless loop to not repeat the sequence
+    while(true);
 }
