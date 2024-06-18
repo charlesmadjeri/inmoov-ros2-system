@@ -2,12 +2,11 @@
 
 #include "Types.hpp"
 
-// ********** FINGER ANGLES **********
+// ********** FINGERS ANGLES **********
 
 #define FINGER_DEFAULT_ANGLE 0
 #define FINGER_MIN_ANGLE 0
-#define FINGER_MAX_ANGLE 300
-
+#define FINGER_MAX_ANGLE 180
 
 // ****************************** RIGHT FOREARM ******************************
 
@@ -26,6 +25,7 @@
 // SERVOS
 #define RIGHT_THUMB_SERVO_PIN 3
 #define RIGHT_THUMB_SERVO_TYPE ServoType::JX_6225MG
+#define RIGHT_THUMB_MAX_ANGLE 135
 
 #define RIGHT_INDEX_SERVO_PIN 4
 #define RIGHT_INDEX_SERVO_TYPE ServoType::JX_6225MG

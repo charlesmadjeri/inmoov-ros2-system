@@ -28,7 +28,11 @@ Hand::Hand(SideType type):
             type == SideType::LEFT ? LEFT_PINKY_SERVO_PIN : RIGHT_PINKY_SERVO_PIN,
             type == SideType::LEFT ? LEFT_PINKY_SENSOR_PIN : RIGHT_PINKY_SENSOR_PIN
     )
-{}
+{
+    if (_type == SideType::RIGHT && RIGHT_THUMB_MAX_ANGLE) { // Use custom max angle for the thumb
+        thumb.setMaxAngle(RIGHT_THUMB_MAX_ANGLE);
+    }
+}
 
 void
 Hand::setup()

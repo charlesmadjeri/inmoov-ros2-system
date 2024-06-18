@@ -16,6 +16,11 @@ Finger::setup() {
 }
 
 void
+Finger::setMaxAngle(int angle) {
+    _maxAngle = angle;
+}
+
+void
 Finger::setAngle(int angle) {
     if (angle < _minAngle) {
         angle = _minAngle;

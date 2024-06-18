@@ -10,12 +10,13 @@ private:
     HallSensor _sensor;
     const int _defaultAngle;
     const int _minAngle;
-    const int _maxAngle;
+    int _maxAngle;
 
 public:
     explicit Finger(ServoType servoType, int servoPin, int sensorPin);
 
     void setup();
+    void setMaxAngle(int angle);
 
     void setAngle(int angle);
     int getAngle();
