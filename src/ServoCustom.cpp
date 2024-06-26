@@ -1,6 +1,7 @@
-#include "include/ServoCustom.hpp"
+#include "../include/ServoCustom.hpp"
 
 ServoCustom::ServoCustom(ServoType type, int pin, int defaultAngle):
+    _servo(Servo()),
     _type(type),
     _pin(pin),
     _defaultAngle(defaultAngle),
@@ -20,7 +21,6 @@ ServoCustom::ServoCustom(ServoType type, int pin, int defaultAngle):
             this->_maxAngle = 0;
             break;
     }
-    this->_servo = Servo();
 }
 
 void

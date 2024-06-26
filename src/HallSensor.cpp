@@ -1,23 +1,25 @@
-#include "include/HallSensor.hpp"
+#include "../include/HallSensor.hpp"
 
+/**
+ * @brief Constructor
+ * @param pin
+ */
 HallSensor::HallSensor(int pin): _pin(pin)
+{}
+
+/**
+ * @brief Setup function
+ */
+void
+HallSensor::setup()
 {
     Serial.begin(9600);
 }
 
-void
-HallSensor::setup()
-{
-//    pinMode(_pin, INPUT);
-}
-
-float
-HallSensor::getVoltage()
-{
-    int sensorValue = analogRead(_pin);
-    return sensorValue * (5.0 / 1023.0);
-}
-
+/**
+ * @brief Get the value of the sensor
+ * @return int
+ */
 int
 HallSensor::getValue()
 {

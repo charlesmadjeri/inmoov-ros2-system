@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Config.hpp"
+
 // ********** SERVO **********
 enum class ServoType {
-    UNDEFINED,
     JX_6225MG,
     HK15298B
 };
@@ -20,4 +21,9 @@ enum class FingerType {
     MIDDLE,
     RING,
     PINKY
+};
+
+struct PressureValues {
+    int minPressure;
+    int maxPressure;
 };

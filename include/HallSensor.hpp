@@ -6,11 +6,12 @@ class HallSensor {
 private:
     int _pin;
 public:
-    explicit HallSensor(int pin);
+    // Default constructor
+    HallSensor() : _pin(0) {}
 
+    // Constructor
+    explicit HallSensor(int pin);
     void setup();
 
-    float getVoltage();
-private:
     int getValue();
 };

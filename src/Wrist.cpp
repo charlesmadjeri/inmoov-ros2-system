@@ -1,4 +1,4 @@
-#include "include/Wrist.hpp"
+#include "../include/Wrist.hpp"
 
 Wrist::Wrist(SideType type):
     _type(type),
