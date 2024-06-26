@@ -9,8 +9,9 @@ private:
     SideType _side;
 public:
     explicit Arm(SideType side);
-
     void setup();
+
+    void greet();
 
     Wrist wrist;
     Hand hand;

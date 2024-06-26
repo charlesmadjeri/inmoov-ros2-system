@@ -1,26 +1,47 @@
 #include "../include/Finger.hpp"
 
 /**
+ * @brief Default constructor
+ */
+Finger::Finger() : _servo(ServoCustom()),
+           _sensor(HallSensor()),
+           _type(FingerType::THUMB),
+           _gotSensor(false),
+           _defaultAngle(0),
+           _minAngle(0),
+           _maxAngle(0),
+           _minPressure(0),
+           _maxPressure(0)
+{
+    _currentAngle = _defaultAngle;
+}
+
+/**
  * @brief Constructor
  * @param servoType
  * @param servoPin
  * @param sensorPin
  */
 Finger::Finger(FingerType fingerType,
+               bool gotSensor,
                ServoType servoType,
                int servoPin,
                int sensorPin,
-               PressureValues values
+               ServoValues angleValues,
+               PressureValues pressureValues
                ):
-    _servo(servoType, servoPin, FINGER_DEFAULT_ANGLE),
+    _servo(servoType, servoPin, angleValues.minAngle),
     _sensor(sensorPin),
     _type(fingerType),
-    _defaultAngle(FINGER_DEFAULT_ANGLE),
-    _minAngle(FINGER_MIN_ANGLE),
-    _maxAngle(FINGER_MAX_ANGLE),
-    _minPressure(values.minPressure),
-    _maxPressure(values.maxPressure)
-{}
+    _gotSensor(gotSensor),
+    _defaultAngle(angleValues.minAngle),
+    _minAngle(angleValues.minAngle),
+    _maxAngle(angleValues.maxAngle),
+    _minPressure(pressureValues.minPressure),
+    _maxPressure(pressureValues.maxPressure)
+{
+    _currentAngle = _defaultAngle;
+}
 
 /**
  * @brief Setup function
@@ -29,7 +50,8 @@ void
 Finger::setup()
 {
     _servo.setup();
-    _sensor.setup();
+    if (_gotSensor)
+        _sensor.setup();
 }
 
 /**
@@ -51,13 +73,12 @@ Finger::setPosition(int percentage)
 {
     percentage = clampPercentage(percentage);
     int targetAngle = calculateTargetAngle(percentage);
-    int currentAngle = _servo.getAngle();
-    int direction = calculateDirection(targetAngle, currentAngle);
+    int direction = calculateDirection(targetAngle);
 
-    if (direction < 0) {
+    if (direction < 0 || !_gotSensor) {
         setAngleWithoutPressureCheck(targetAngle);
     } else {
-        graduallySetAngleWithPressureCheck(targetAngle, currentAngle, direction);
+        graduallySetAngleWithPressureCheck(targetAngle);
     }
 }
 
@@ -66,19 +87,9 @@ Finger::setPosition(int percentage)
  * @return int
  */
 int
-Finger::getPosition()
+Finger::getPosition() const
 {
-    int currentAngle = _servo.getAngle();
-
-    // Ensure the current angle is within the defined range
-    if (currentAngle < _minAngle) {
-        currentAngle = _minAngle;
-    } else if (currentAngle > _maxAngle) {
-        currentAngle = _maxAngle;
-    }
-
-    // Calculate the percentage
-    return (currentAngle - _minAngle) * 100 / (_maxAngle - _minAngle);
+    return (_currentAngle - _minAngle) * 100 / (_maxAngle - _minAngle);
 }
 
 /**
@@ -90,14 +101,6 @@ Finger::getPressure()
 {
     int sensorValue = _sensor.getValue();
 
-    // Ensure the sensor value is within the defined range
-    if (sensorValue < _minPressure) {
-        sensorValue = _minPressure;
-    } else if (sensorValue > _maxPressure) {
-        sensorValue = _maxPressure;
-    }
-
-    // Calculate the percentage
     return (sensorValue - _minPressure) * 100 / (_maxPressure - _minPressure);
 }
 
@@ -126,13 +129,12 @@ Finger::calculateTargetAngle(int percentage) const
 /**
  * @brief Calculate the direction based on the target and current angle
  * @param targetAngle
- * @param currentAngle
  * @return int
  */
 int
-Finger::calculateDirection(int targetAngle, int currentAngle)
+Finger::calculateDirection(int targetAngle) const
 {
-    return (targetAngle > currentAngle) ? 1 : -1;
+    return (targetAngle > _currentAngle) ? 1 : -1;
 }
 
 /**
@@ -143,21 +145,22 @@ void
 Finger::setAngleWithoutPressureCheck(int targetAngle)
 {
     _servo.setAngle(targetAngle);
+    _currentAngle = targetAngle;
 }
 
 /**
  * @brief Gradually set the angle of the servo while checking the pressure
  * @param targetAngle
- * @param currentAngle
  * @param direction
  */
 void
-Finger::graduallySetAngleWithPressureCheck(int targetAngle, int currentAngle, int direction)
+Finger::graduallySetAngleWithPressureCheck(int targetAngle)
 {
-    for (int angle = currentAngle; angle != targetAngle; angle += direction) {
+    for (int angle = _currentAngle; angle < targetAngle; angle++) {
         _servo.setAngle(angle);
-        if (_sensor.getValue() >= _maxPressure) {
+        _currentAngle = angle;
+
+        if (_sensor.getValue() >= _maxPressure)
             break;
-        }
     }
 }

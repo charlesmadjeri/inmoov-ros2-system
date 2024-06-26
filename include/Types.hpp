@@ -27,3 +27,8 @@ struct PressureValues {
     int minPressure;
     int maxPressure;
 };
+
+struct ServoValues {
+    int minAngle;
+    int maxAngle;
+};

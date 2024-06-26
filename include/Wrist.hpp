@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Arduino.h>
 #include "ServoCustom.hpp"
 #include "Types.hpp"
 #include "Config.hpp"
@@ -12,11 +13,15 @@ private:
     const int _minAngle;
     const int _maxAngle;
 
+    int _currentAngle;
+
 public:
     explicit Wrist(SideType type);
-
     void setup();
 
-    void setAngle(int angle);
-    int getAngle();
+    void setPosition(int angle);
+    int getPosition() const;
+
+    int calculateTargetAngle(int percentage) const;
+    static int clampPercentage(int percentage);
 };
