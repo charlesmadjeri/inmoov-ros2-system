@@ -1,4 +1,4 @@
-# Taïs Robot Firmware
+# Inmoov Robot ROS Firmware
 
 This repository contains the embedded software for the Taïs robot, using PlatformIO and FreeRTOS.
 
