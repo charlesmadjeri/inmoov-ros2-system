@@ -1,6 +1,6 @@
 # Inmoov ROS 2 Project: Dockerized System Setup
 
-This project provides a Dockerized setup for a ROS 2 project, using `docker-compose` for orchestration. The `Makefile` included helps automate common tasks such as building images, running containers, linting code, and running tests.
+This project provides a Dockerized setup for a ROS 2 project, using `docker-compose` for orchestration. The `Makefile` included helps automate common tasks such as building images, running containers, linting code, running tests, and deploying to a NUC (Next Unit of Computing, aka an embedded computer in the robot).
 
 ## Prerequisites
 
@@ -53,9 +53,32 @@ Here’s a brief overview of the project structure:
 - **`scripts/`**: Utility scripts for starting and stopping the robot.
 - **`doc/`**: Documentation files.
 
+## Environment Configuration
+
+The project uses a `.env` file to manage environment-specific variables. Create a `.env` file in the root directory of the project with the following format:
+
+```env
+# .env
+
+# Docker Compose file
+DOCKER_COMPOSE_FILE=docker-compose.yml
+
+# Project name
+PROJECT_NAME=my_ros2_project
+
+# Deployment path on NUC
+NUC_DEPLOY_PATH=/path/to/deployment
+# NUC user and address
+NUC_USER=user
+NUC_HOST=robot-nuc
+
+# ROS 2 workspace setup path on NUC
+ROS2_WORKSPACE_SETUP_PATH=/path/to/deployment/install/setup.bash
+```
+
 ## Makefile Rules
 
-The `Makefile` included in this project provides several rules to help you manage your Docker environment. Here's a summary of the available rules:
+The `Makefile` included in this project provides several rules to help you manage your Docker environment and deploy to the NUC. Here’s a summary of the available rules:
 
 ### `make help`
 
@@ -65,69 +88,93 @@ Displays the help message with a list of available `Makefile` targets and their 
 make help
 ```
 
-### `make build`
+### Development Rules
+- **`make dc-build`**: Builds the Docker containers defined in the `docker-compose.yml` file.
 
-Builds the Docker images defined in the `docker-compose.yml` file.
+  ```sh
+  make dc-build
+  ```
 
-```sh
-make build
-```
+- **`make dc-up`**: Starts the Docker containers in detached mode.
 
-### `make up`
+  ```sh
+  make dc-up
+  ```
 
-Starts the Docker containers in detached mode, using `docker-compose up -d`.
+- **`make dc-down`**: Stops and removes the Docker containers.
 
-```sh
-make up
-```
+  ```sh
+  make dc-down
+  ```
 
-### `make down`
+- **`make dc-logs`**: Follows the logs from the running Docker containers.
 
-Stops and removes the Docker containers, using `docker-compose down`.
+  ```sh
+  make dc-logs
+  ```
 
-```sh
-make down
-```
+- **`make dc-test`**: Runs tests inside Docker.
 
-### `make logs`
+  ```sh
+  make dc-test
+  ```
 
-Follows the logs from the running Docker containers. This is useful for debugging and monitoring.
+- **`make dc-clean`**: Cleans up Docker images and containers.
 
-```sh
-make logs
-```
+  ```sh
+  make dc-clean
+  ```
 
-### `make lint_cpp`
+### Local Linting Rules
+- **`make lint-cpp`**: Runs local C++ linting on `.cpp` and `.hpp` files.
 
-Runs C++ linting on all `.cpp` and `.hpp` files in your project using `cpplint`. The linting is performed inside the Docker container.
+  ```sh
+  make lint-cpp
+  ```
 
-```sh
-make lint_cpp
-```
+- **`make lint-py`**: Runs local Python linting on `.py` files.
 
-### `make lint_py`
+  ```sh
+  make lint-py
+  ```
 
-Runs Python linting on all Python files in your project using `flake8`. The linting is performed inside the Docker container.
+### CI/CD Docker Linting Rules
+- **`make dc-lint-cpp`**: Runs C++ linting inside Docker.
 
-```sh
-make lint_py
-```
+  ```sh
+  make dc-lint-cpp
+  ```
 
-### `make test`
+- **`make dc-lint-py`**: Runs Python linting inside Docker.
 
-Runs tests defined in your project using `colcon test` inside the Docker container.
+  ```sh
+  make dc-lint-py
+  ```
 
-```sh
-make test
-```
+### NUC Rules
+- **`make nuc-deploy`**: Deploys files to NUC and runs the deployment script.
 
-### `make clean`
+  ```sh
+  make nuc-deploy
+  ```
 
-Stops and removes all Docker containers and images associated with the project. This is useful for cleaning up your environment.
+- **`make nuc-build`**: Builds the ROS 2 project on the NUC.
 
-```sh
-make clean
-```
+  ```sh
+  make nuc-build
+  ```
+
+- **`make nuc-start`**: Starts the ROS 2 project on the NUC.
+
+  ```sh
+  make nuc-start
+  ```
+
+- **`make nuc-stop`**: Stops the ROS 2 project on the NUC.
+
+  ```sh
+  make nuc-stop
+  ```
 
 ## How to Use
 
@@ -138,13 +185,15 @@ make clean
    cd inmoov-ros2-system
    ```
 
-2. Review the `docker-compose.yml` file to ensure it meets your project’s requirements.
+2. From the `.env.example` file, create and configure your local `.env` file in the root directory with the required variables. Never push your `.env`.
 
-3. Use the `Makefile` commands listed above to build, run, and manage your Docker environment.
+3. Review the `docker-compose.yml` file to ensure it meets your project’s requirements.
+
+4. Use the `Makefile` commands listed above to build, run, and manage your Docker environment, and deploy to the NUC.
 
 ## License
 
-This project is licensed under the MIT License with Non-Commercial Use. See the LICENSE.md file for details.
+This project is licensed under the MIT License with Non-Commercial Use. See the [LICENSE.md](LICENSE.md) file for details.
 
 ## Contributing
 
@@ -152,4 +201,4 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ## Contact
 
-For questions or support, please send a mail [here](mailto:inmoovros2contributi.numerate191@passmail.net).
+For questions or support, please email [us](mailto:inmoovros2contributi.numerate191@passmail.net).
